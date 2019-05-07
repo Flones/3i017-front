@@ -1,39 +1,60 @@
 import React, { Component } from 'react';
-//import './Signin.css';
+import axios from "axios";
 class Signin extends Component{
   constructor(props){
-		super(props);
-		this.state={ isConnected : props.isConnected };
+    super(props);
+    this.state = {login: '',password:''};
+    this.handleChangePassword = this.handleChangePassword.bind(this);
+    this.handleChangeLogin = this.handleChangeLogin.bind(this);
   }
-  render(){
-    return (<form>
-        <div>
-	<p> 
-          <label >Veuillez saisir un nom</label>
-          <input id="nom" type="text" name="text" size="10"/> 
-	</p>  
-	<p>        
-	  <label >Veuillez saisir un prenom</label>
-          <input id="prenom" type="text" name="text" size="10"/>
-	</p>  
-	<p> 
-          <label >Veuillez saisir un mail</label>
-          <input id="mail" type="text" name="text" size="10"/>
-	</p>  
-	<p> 
-          <label >Veuillez saisir un login</label>
-          <input id="login" type="text" name="text" size="10"/>
-	</p>  
-	<p> 
-          <label >Veuillez saisir un mdp</label>
-          <input id="mdp" type="text" name="text" size="10"/>
-	</p>  	
-        </div>
-        <div>
-          <input type="submit" value="inscription"/>
-        </div>
-      </form>);
-  }
-} 
 
+  handleChangeLogin(event) {
+    this.setState({login: event.target.value});
+  }
+  handleChangePassword(event) {
+    this.setState({password: event.target.value});
+  }
+  reponse_login(reponse){
+    if(reponse.data["status"]==="error")
+      {
+        this.setState({status:"error",texteerror:reponse.data["description"]})
+      }
+
+    else{
+      console.log("je rentre")
+      this.setState({status:"ok"})
+    }
+  }
+
+  send(){
+    console.log("send")
+    axios.get("http://localhost:8080/TwisterF/createUser",{params:{login:this.state.login,password:this.state.password}})
+    .then(reponse=>this.reponse_login(reponse))
+  }
+
+
+
+  render(){
+    return (
+      <div >
+      <p className="centerL"> INSCRIPTION </p>
+        <label>
+          login
+          <input type="text" value={this.state.login} onChange={this.handleChangeLogin} className="form-control"/>
+            password
+          <input type="text"  value={this.state.password} onChange={this.handleChangePassword} className="form-control"/>
+
+        <button type="submit" value="sign-in" onClick={()=>this.send()}  > sign-in  </button>
+          </label>
+      </div>
+
+        /*  <button className="btn btn-secondary" onClick={this.props.Login}>
+            connexion
+          </button>
+          onClick={this.send()}  onClick={this.props.Login}*/
+
+
+      );
+  }
+}
 export default Signin;

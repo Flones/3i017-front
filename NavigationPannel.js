@@ -2,20 +2,38 @@ import React, { Component } from 'react';
 import './NavigationPannel.css';
 import Login from './Login';
 import Logout from './Logout';
+import Signin from './Signin';
 class NavigationPannel extends Component{
   constructor(props){
 		super(props);
-		this.state={ login : props.login };
-		this.state={ logout : props.logout };
-		this.state={ isConnected : props.isConnected };
+    this.state= {key:''}
+    this.getData = this.getData.bind(this);
   }
+  getData(val){
+      // do not forget to bind getData in constructor
+      console.log(val);
+      this.setState({key: val});
+      this.props.sendData(val)
+      console.log(this.state.key);
+  }
+
+
   render(){
     return (
-     <nav>
-        {this.state.isConnected === true ? 
-        <Logout Logout={this.props.Logout} /> : 
-        <Login Login={this.props.Login}/> }
-     </nav>
+      <nav>
+
+             { this.props.isConnected == true ?
+               <div>
+
+                 <Logout Logout={this.props.logout} Key={this.state.key}  />
+               </div>
+              :
+             <div>
+               <Login className="row "Login={this.props.login} sendData={this.getData}  />
+               <Signin className="row "/>
+             </div>
+             }
+      </nav>
    );
  }
 }

@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
-
 import MainPage from './MainPage';
 import './MainPage.css';
+import './index.css';
+
 //ReactDOM.render(<App />, document.getElementById('root'));
-ReactDOM.render(<MainPage/>, document.getElementById('root'));
+ReactDOM.render(<MainPage />, document.getElementById('root'));
 
 
 
